@@ -7,8 +7,10 @@ import java.util.Optional;
 public class RepositorioLibro {
     private Map<String, Libro> db = new HashMap<>();
 
-    // Método para guardar un libro
     public String guardarLibro(Libro libro) {
+        if (libro.getIsbn() == null) {
+            return "ISBN del libro es nulo.";
+        }
         if (db.containsKey(libro.getIsbn())) {
             return "Libro ya existe con ese ISBN.";
         }
@@ -16,12 +18,13 @@ public class RepositorioLibro {
         return "Libro guardado exitosamente.";
     }
 
-    // Método para obtener un libro por ISBN
     public Optional<Libro> obtenerLibroPorIsbn(String isbn) {
+        if (isbn == null) {
+            return Optional.empty(); // Devolver Optional vacío si isbn es null
+        }
         return Optional.ofNullable(db.get(isbn));
     }
 
-    // Método para actualizar un libro
     public String actualizarLibro(Libro libro) {
         if (libro.getIsbn() == null) {
             return "ISBN del libro es nulo.";
@@ -33,7 +36,6 @@ public class RepositorioLibro {
         return "Libro actualizado exitosamente.";
     }
 
-    // Método para eliminar un libro
     public String eliminarLibro(String isbn) {
         if (isbn == null) {
             return "ISBN del libro es nulo.";
@@ -45,7 +47,6 @@ public class RepositorioLibro {
         return "Libro eliminado exitosamente.";
     }
 
-    // Setter para db
     public void setDb(Map<String, Libro> db) {
         this.db = db;
     }
