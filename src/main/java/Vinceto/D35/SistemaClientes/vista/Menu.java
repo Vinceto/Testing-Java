@@ -1,12 +1,7 @@
 package Vinceto.D35.SistemaClientes.vista;
-import Vinceto.D35.SistemaClientes.modelo.CategoriaEnum;
-import Vinceto.D35.SistemaClientes.modelo.Cliente;
-import Vinceto.D35.SistemaClientes.servicio.ArchivoServicio;
-import Vinceto.D35.SistemaClientes.servicio.ClienteServicio;
-import Vinceto.D35.SistemaClientes.servicio.ExportadorCsv;
-import Vinceto.D35.SistemaClientes.servicio.ExportadorTxt;
+import Vinceto.D35.SistemaClientes.modelo.*;
+import Vinceto.D35.SistemaClientes.servicio.*;
 import Vinceto.D35.SistemaClientes.utilidades.SScan;
-import org.w3c.dom.ls.LSOutput;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -162,33 +157,52 @@ public class Menu {
     }
 
     private void cargarDatos() {
-        System.out.println("Ingrese la ruta completa y el nombre del archivo DBClientes.csv:");
+        String osName = System.getProperty("os.name").toLowerCase();
+        if (osName.contains("win")) {
+            System.out.println("---------Cargar Datos en Windows---------------");
+        } else {
+            System.out.println("---------Cargar Datos en Unix/Linux/MacOS---------------");
+        }
+        System.out.println("Ingresa la ruta en donde se encuentra el archivo DBClientes.csv:");
+        System.out.println("La raiz del proyecto inicia en .../SistemaClientes/[la ruta]");
         String ruta = scanner.getString("Ruta del archivo: "); // Usamos getString() para leer la ruta
+        System.out.println("-----------------------------------------------");
+        System.out.println();
+
         List<Cliente> clientesCargados = archivoServicio.cargarDatos(ruta, clienteServicio);
         if (clientesCargados.isEmpty()) {
             System.out.println("No se han cargado datos.");
-        } else {
-            System.out.println("Datos cargados correctamente en la lista.");
         }
         System.out.println();
     }
 
     private void exportarDatos() {
+        String osName = System.getProperty("os.name").toLowerCase();
+        if (osName.contains("win")) {
+            System.out.println("---------Exportar Datos en Windows---------------");
+        } else {
+            System.out.println("---------Exportar Datos en Unix/Linux/MacOS---------------");
+        }
         System.out.println("Seleccione el formato a exportar:");
         System.out.println("1.-Formato csv");
         System.out.println("2.-Formato txt");
         int formato = (int) scanner.escanear("int");
         System.out.println("Ingrese la ruta en donde desea exportar el archivo:");
+        System.out.println("La raiz del proyecto inicia en .../SistemaClientes/[la ruta]");
         String ruta = (String) scanner.escanear("string");
+
+        Exportador exportador;
         if (formato == 1) {
-            exportadorCsv.exportar(ruta + "/" + fileName + ".csv", clienteServicio.getListaClientes());
-            System.out.println("Datos de clientes exportados correctamente en formato csv.");
+            exportador = new ExportadorCsv();
         } else if (formato == 2) {
-            exportadorTxt.exportar(ruta + "/" + fileName + ".txt", clienteServicio.getListaClientes());
-            System.out.println("Datos de clientes exportados correctamente en formato txt.");
+            exportador = new ExportadorTxt();
         } else {
             System.out.println("Formato inválido.");
+            return;
         }
+
+        exportador.exportar(ruta + "/" + fileName + (formato == 1 ? ".csv" : ".txt"), clienteServicio.getListaClientes());
+        System.out.println("Datos de clientes exportados correctamente en formato " + (formato == 1 ? "csv" : "txt") + ".");
     }
 
     private void terminarPrograma() {

@@ -15,7 +15,6 @@ public class Cliente {
         this.nombreCategoria = nombreCategoria;
     }
 
-    // Getters y setters
     public String getRunCliente() { return runCliente; }
     public void setRunCliente(String runCliente) { this.runCliente = runCliente; }
     public String getNombreCliente() { return nombreCliente; }
@@ -29,12 +28,12 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return "Cliente{" +
-                "runCliente='" + runCliente + '\'' +
-                ", nombreCliente='" + nombreCliente + '\'' +
-                ", apellidoCliente='" + apellidoCliente + '\'' +
-                ", aniosCliente='" + aniosCliente + '\'' +
-                ", nombreCategoria=" + nombreCategoria +
-                '}';
+        return "-------------Datos del Cliente-------------\n" +
+                "RUN del Cliente: " + runCliente + "\n" +
+                "Nombre del Cliente: " + nombreCliente + "\n" +
+                "Apellido del Cliente: " + apellidoCliente + "\n" +
+                "Años como Cliente: " + aniosCliente + " años\n" +
+                "Categoría del Cliente: " + nombreCategoria + "\n" +
+                "-------------------------------------------";
     }
 }
